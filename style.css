@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Footer.css */
+
+/* General footer wrapper */
+.footer-wrapper {
+    background-color: #f8f9fa;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  
+  /* Main footer area */
+  .main-footer {
+    background-color: #343a40;
+    color: #ffffff;
+    padding: 20px 0;
+  }
+  
+  .main-footer .footer-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .main-footer .footer-about-us p {
+    margin: 0;
+  }
+  
+  .main-footer .footer-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .main-footer .footer-menu li {
+    margin-bottom: 10px;
+  }
+  
+  .main-footer .footer-menu li a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .main-footer .footer-menu li a:hover {
+    color: #ffdd57;
+  }
+  
+  .main-footer .mt-30-xs {
+    margin-top: 30px;
+  }
+  
+  .main-footer .container {
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  /* Bottom footer area */
+  .bottom-footer {
+    background-color: #212529;
+    color: #868e96;
+    padding: 10px 0;
+    font-size: 14px;
+  }
+  
+  .bottom-footer .copy-right {
+    margin: 0;
+  }
+  
+  .bottom-footer .bottom-footer-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+  }
+  
+  .bottom-footer .bottom-footer-menu li {
+    display: inline-block;
+    margin: 0 5px;
+  }
+  
+  .bottom-footer .for-social {
+    text-align: right;
+  }
+  
+  .bottom-footer .for-social li {
+    display: inline-block;
+    margin: 0 5px;
+  }
+  
+  .bottom-footer .for-social a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .bottom-footer .for-social a:hover {
+    color: #ffdd57;
+  }
+  
+  .bottom-footer .container {
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 767px) {
+    .main-footer .col-md-9,
+    .main-footer .col-md-4,
+    .main-footer .col-md-5,
+    .bottom-footer .col-md-4 {
+      text-align: center;
+    }
+  
+    .bottom-footer .for-social {
+      text-align: center;
+      margin-top: 10px;
+    }
+  }
+  

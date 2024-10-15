@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "PasswordResetRequest" ADD COLUMN     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "isReset" BOOLEAN NOT NULL DEFAULT false;

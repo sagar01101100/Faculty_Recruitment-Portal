@@ -1,0 +1,48 @@
+/* Basic styles */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+
+  }
+  
+  .application-form {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+  
+  .section {
+    margin-bottom: 1rem;
+  }
+  
+  /* Styling for data display */
+  .data-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .data-item {
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .data-item label {
+    flex: 0 0 150px;
+    font-weight: bold;
+  }
+  
+  .data-item span {
+    flex: 1;
+  }
+  

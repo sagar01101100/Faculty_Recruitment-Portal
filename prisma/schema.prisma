@@ -1,0 +1,186 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x"]
+}
+
+generator zod {
+  provider      = "zod-prisma"
+  output        = "./zod"
+  relationModel = "true"
+  modelSuffix   = "Model"
+  modelCase     = "PascalCase"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Field {
+  id                Int               @id @default(autoincrement())
+  title             String
+  description       String?
+  type              String
+  choices           String[]
+  fieldId           Int?
+  fieldGroupId      Int?
+  allowFile         Boolean           @default(false)
+  templateFieldName String?
+  isRequired        Boolean           @default(true)
+  maxLength         Int?
+  placeholder       String?
+  FieldGroup        FieldGroup?       @relation(fields: [fieldGroupId], references: [id])
+  Field             Field?            @relation("FieldToField", fields: [fieldId], references: [id])
+  Entry             Entry[]
+  fields            Field[]           @relation("FieldToField")
+  TemplateEntries   TemplateEntries[]
+  UploadHistory     UploadHistory[]
+}
+
+model FieldGroup {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String?
+  fields      Field[]
+}
+
+model Entry {
+  id         Int      @id @default(autoincrement())
+  content    String
+  updatedAt  DateTime @updatedAt
+  snapshotId String       
+  fieldId    Int?
+  entryId    Int?
+  isFile     Boolean  @default(false)
+  required   Boolean  @default(false)
+  Entry      Entry?   @relation("EntryToEntry", fields: [entryId], references: [id])
+  field      Field?   @relation(fields: [fieldId], references: [id])
+  snapshot   Snapshot @relation(fields: [snapshotId], references: [id])
+  entries    Entry[]  @relation("EntryToEntry")
+}
+
+model TemplateEntries {
+  id        Int      @id @default(autoincrement())
+  content   String
+  updatedAt DateTime @updatedAt
+  fieldId   Int?
+  isFile    Boolean  @default(false)
+  field     Field?   @relation(fields: [fieldId], references: [id])
+}
+
+model Snapshot {
+  id           String     @id @default(cuid())
+  userId       String
+  isComplete   Boolean    @default(false)
+  departmentId String
+  positionId   String
+  department   Department @relation(fields: [departmentId], references: [id])
+  position     Position   @relation(fields: [positionId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
+  entries      Entry[]
+
+  @@unique([userId, departmentId, positionId])
+}
+
+
+model FailedLoginAttempt {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  timestamp DateTime @default(now())  
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id                   String                 @id @default(cuid())
+  name                 String
+  email                String                 @unique
+  password             String
+  salt                 String
+  verified             Boolean                @default(false)
+  PasswordResetRequest PasswordResetRequest[]
+  Referral             Referral[]
+  snapshot             Snapshot[]    
+  UploadHistory        UploadHistory[]
+  VerificationRequest  VerificationRequest[]
+   failedLoginAttempts  FailedLoginAttempt[]
+
+}
+
+model PasswordResetRequest {
+  id        String   @id @default(cuid())
+  userId    String
+  password  String
+  salt      String
+  createdAt DateTime @default(now())
+  isReset   Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Referral {
+  id        String          @id @default(cuid())
+  userId    String
+  submitted Boolean         @default(false)
+  email     String?         @unique
+  address   String?
+  user      User            @relation(fields: [userId], references: [id])
+  entries   ReferralEntry[]
+}
+
+model ReferralField {
+  id            Int             @id @default(autoincrement())
+  title         String
+  description   String?
+  type          String
+  allowFile     Boolean         @default(false)
+  ReferralEntry ReferralEntry[]
+}
+
+model ReferralEntry {
+  id         Int           @id @default(autoincrement())
+  content    String
+  updatedAt  DateTime      @updatedAt
+  fieldId    Int
+  referralId String?
+  isFile     Boolean       @default(false)
+  field      ReferralField @relation(fields: [fieldId], references: [id])
+  Referral   Referral?     @relation(fields: [referralId], references: [id])
+}
+
+model UploadHistory {
+  id       Int      @id @default(autoincrement())
+  userId   String
+  fieldId  Int
+  uploadAt DateTime @default(now())
+  Field    Field    @relation(fields: [fieldId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+}
+
+model Admin {
+  id       String @id @default(cuid())
+  name     String
+  email    String @unique
+  password String
+  salt     String
+
+  @@index([email])
+}
+
+model Department {
+  id       String     @id @default(cuid())
+  name     String
+  Snapshot Snapshot[]
+}
+
+model Position {
+  id       String     @id @default(cuid())
+  name     String
+  Snapshot Snapshot[]
+}
+
+model VerificationRequest {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  userId     String
+  isVerified Boolean  @default(false)
+  User       User     @relation(fields: [userId], references: [id])
+}
